@@ -2,13 +2,8 @@ import * as jwt from 'jsonwebtoken';
 import * as crypto from 'crypto';
 import config from '../config';
 import db from '../db';
+import type { IPayload } from './types';
 
-
-export interface IPayload {
-    id?: number;
-    userid?: number;
-    uniq?: string;
-}
 
 export const createToken = async (payload: IPayload) => {
     payload.uniq = crypto.randomBytes(12).toString('hex');
@@ -18,10 +13,3 @@ export const createToken = async (payload: IPayload) => {
     await db.tokens.update(token, result.insertId);
     return token;
 }
-
-// {
-//     id: which token this is,
-//     userid: who this token belong to,
-//     uniq: random shit on it,
-// }
-//secret signature

@@ -1,36 +1,35 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 
-class App extends React.Component<IAppProps, IAppState> {
-	constructor(props: IAppProps) {
-		super(props);
-		this.state = {
-			name: null
+const App: React.FC<AppProps> = (props) => {
+	useEffect(() => {
+		const testPlz = async () => {
+			const res = await fetch('/api/lulz', {
+				method: 'GET',
+				headers: {
+					Authorization:
+						'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOjMsInVuaXEiOiJjZTUzYzc5MDg3ZTgxNzg4MjYzOWFlNjAiLCJpZCI6MywiaWF0IjoxNTk1MDAyNDEyLCJleHAiOjE1OTYyOTg0MTJ9.duDi4qXtI3y9KI0d4fWnYnY5DvlcQyBfH0V3BFZp3gs'
+				}
+			});
+			if (res.ok) {
+				const lulz = await res.json();
+				console.log(lulz);
+			}
 		};
-	}
+		testPlz();
+	}, []);
 
-	async componentDidMount() {
-		try {
-			let r = await fetch('/api/hello');
-			let name = await r.json();
-			this.setState({ name });
-		} catch (error) {
-			console.log(error);
-		}
-	}
+	return (
+		<main className="container">
+			<section className="row">
+				<div className="col-12">
+					<h1 className="text-primary text-center display-1">Loll</h1>
+				</div>
+			</section>
+		</main>
+	);
+};
 
-	render() {
-		return (
-			<main className="container my-5">
-				<h1 className="text-primary text-center">Hello {this.state.name}!</h1>
-			</main>
-		);
-	}
-}
-
-export interface IAppProps {}
-
-export interface IAppState {
-	name: string;
-}
+interface AppProps {}
 
 export default App;
